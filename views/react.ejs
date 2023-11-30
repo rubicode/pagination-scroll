@@ -63,7 +63,7 @@
 
             readData = async () => {
                 try {
-                    const response = await fetch(`http://localhost:3001?page=${this.state.page}`)
+                    const response = await fetch(`/?page=${this.state.page}`)
                     const { data, pages } = await response.json()
                     console.log(data)
                     this.setState(prevState => ({

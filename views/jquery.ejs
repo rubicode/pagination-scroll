@@ -32,7 +32,7 @@
         async function readData() {
             console.log(page)
             const { data, pages } = await $.ajax({
-                url: `http://localhost:3001?page=${page}`,
+                url: `/?page=${page}`,
                 method: 'GET',
                 dataType: 'json'
             })

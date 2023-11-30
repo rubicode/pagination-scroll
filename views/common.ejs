@@ -32,7 +32,7 @@
         });
 
         async function readData() {
-            const response = await fetch(`http://localhost:3001?page=${page}`)
+            const response = await fetch(`/?page=${page}`)
             const { data, pages } = await response.json()
 
             let html = ''
