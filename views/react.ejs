@@ -37,6 +37,7 @@
                 this.state = {
                     data: [],
                     page: 1,
+                    query: ''
                 }
             }
 
@@ -63,7 +64,7 @@
 
             readData = async () => {
                 try {
-                    const response = await fetch(`/?page=${this.state.page}`)
+                    const response = await fetch(`/?page=${this.state.page}&query=${this.state.query}`)
                     const { data, pages } = await response.json()
                     console.log(data)
                     this.setState(prevState => ({
@@ -74,12 +75,41 @@
                 }
             }
 
+            filterData = async () => {
+                try {
+                    const response = await fetch(`/?page=1&query=${this.state.query}`)
+                    const { data, pages } = await response.json()
+                    console.log(data)
+                    this.setState({
+                        data: [...data]
+                    })
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+
+            onSubmit = (e) => {
+                e.preventDefault()
+                this.filterData()
+            }
+
+            onKeyup = (e) => {
+                this.setState({ query: e.target.value }, () => {
+                    this.filterData()
+                })
+            }
+
             render() {
                 return (
-                    <div className="container">
-                        {this.state.data.map(item => (<NameItem key={item._id} item={item} />))}
+                    <div>
+                        <form className="row" onSubmit={this.onSubmit}>
+                            <input type="text" className="form-control" defaultValue={this.state.query} onKeyUp={this.onKeyup} />
+                            <button type="submit" className="btn btn-primary">search</button>
+                        </form>
+                        <div className="container">
+                            {this.state.data.map(item => (<NameItem key={item._id} item={item} />))}
+                        </div>
                     </div>
-
                 );
             }
         }

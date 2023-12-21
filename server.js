@@ -23,15 +23,22 @@ main().then((siswa) => {
 
     app.get('/', async function (req, res) {
         try {
-            let { page = 1, limit = 10 } = req.query
+            let { page = 1, limit = 10, query } = req.query
+
+            const params = {}
+
+            if(query){
+                params['nama'] = new RegExp(query, 'i')
+            }
+
             limit = Number(limit)
             page = Number(page)
 
             const offset = (page - 1) * limit
 
-            const total = await siswa.countDocuments();
+            const total = await siswa.countDocuments(params);
             const pages = Math.ceil(total / limit);
-            const data = await siswa.find().limit(limit).skip(offset).toArray();
+            const data = await siswa.find(params).limit(limit).skip(offset).toArray();
             res.json({
                 data,
                 page,
